@@ -3,17 +3,18 @@ import { baseURL } from '../constants';
 import { ApiError } from '../types/DTO/http-errors-interface';
 import { errorHandler, networkErrorStrategy } from './http-error-strategies';
 import { SignInDTO } from '@/app/(auth)/signin/_schemas/signin.schema';
+import { SignInResponse } from '../types/DTO/signin-response.interface';
 
 const httpService = axios.create({
     baseURL,
     headers: {
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': 'application/json',
     },
 });
 
 httpService.interceptors.response.use(
     (response) => {
-        return response.data.data;
+        return response.data;
     },
     (error) => {
         if (error?.response) {
@@ -21,7 +22,7 @@ httpService.interceptors.response.use(
             if (statusCode >= 400) {
                 const errorData: ApiError = error.response?.data;
                 console.log(error);
-                errorHandler[statusCode](errorData);
+                errorHandler[statusCode]?.(errorData);
             }
         } else {
             networkErrorStrategy();
@@ -42,7 +43,7 @@ httpService.interceptors.request.use(
 );
 
 const auth = {
-    signin: (data: SignInDTO): Promise<void> =>
+    signin: (data: SignInDTO): Promise<SignInResponse> =>
         httpService.post('/identity/signin', data),
 };
 const api = { auth };
