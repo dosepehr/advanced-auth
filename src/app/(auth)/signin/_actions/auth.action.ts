@@ -8,6 +8,7 @@ import {
     UserSession,
 } from '@/utils/types/DTO/auth.interface';
 import { jwtDecode } from 'jwt-decode';
+import { encryptSession } from '@/utils/funcs/session';
 
 export async function signinAction(dto: SignInSchema) {
     const headersList = headers();
@@ -39,7 +40,8 @@ export async function setAuthCookieAction(user: UserResponse) {
         sessionId: user.sessionId,
     };
     const cookieStore = await cookies();
-    cookieStore.set('adv-session', JSON.stringify(session), {
+    const encryptedSession = await encryptSession(session);
+    cookieStore.set('adv-session', encryptedSession, {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
