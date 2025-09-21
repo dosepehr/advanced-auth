@@ -8,7 +8,7 @@ import {
     UserSession,
 } from '@/utils/types/DTO/auth.interface';
 import { jwtDecode } from 'jwt-decode';
-import { encryptSession } from '@/utils/funcs/session';
+import { decryptSession, encryptSession } from '@/utils/funcs/session';
 
 export async function signinAction(dto: SignInSchema) {
     const headersList = headers();
@@ -41,6 +41,8 @@ export async function setAuthCookieAction(user: UserResponse) {
     };
     const cookieStore = await cookies();
     const encryptedSession = await encryptSession(session);
+    const decryptedSession = await decryptSession(encryptedSession)
+    console.log(decryptedSession)
     cookieStore.set('adv-session', encryptedSession, {
         httpOnly: true,
         secure: true,
