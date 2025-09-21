@@ -12,12 +12,12 @@ const PasswordSchema = z
     .min(8, { message: 'رمز عبور باید حداقل ۸ کاراکتر باشد' })
     .max(32, { message: 'رمز عبور نباید بیشتر از ۳۲ کاراکتر باشد' });
 
-export const SignInSchema = z.object({
+export const signInSchema = z.object({
     username: MobileSchema,
     password: PasswordSchema,
 });
 
-export type SignInSchema = z.infer<typeof SignInSchema>;
+export type SignInSchema = z.infer<typeof signInSchema>;
 
 export type SignInDTO = SignInSchema & {
     userAgent: string;
