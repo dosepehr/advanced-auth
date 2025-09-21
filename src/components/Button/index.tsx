@@ -4,7 +4,6 @@ import classNames from 'classnames';
 
 import Loading from '../Loading';
 import { ButtonProps, ButtonShape, ButtonVariant } from './button.type';
-import Arrow from '%/arrow.svg';
 import { Size, Theme } from '@/utils/types/components/component-base.type';
 
 const variantClasses: Record<ButtonVariant, string> = {
@@ -79,9 +78,6 @@ const Button: FC<ButtonProps> = ({
             ) : (
                 <>
                     {children}
-                    {isAnimated && (
-                        <Arrow className='[&>path]:fill-[var(--btn-fg)] group-hover:translate-x-1 transition-transform' />
-                    )}
                 </>
             )}
         </button>

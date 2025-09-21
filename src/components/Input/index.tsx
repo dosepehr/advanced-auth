@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import classNames from 'classnames';
-import './style.css';
 import { InputProps } from './input.type';
 import { Size, Theme } from '@/utils/types/components/component-base.type';
 
