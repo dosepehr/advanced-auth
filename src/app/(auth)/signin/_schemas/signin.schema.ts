@@ -17,4 +17,8 @@ export const SignInSchema = z.object({
     password: PasswordSchema,
 });
 
-export type SignInDTO = z.infer<typeof SignInSchema>;
+export type SignInSchema = z.infer<typeof SignInSchema>;
+
+export type SignInDTO = SignInSchema & {
+    userAgent: string;
+};
