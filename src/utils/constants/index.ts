@@ -1,1 +1,1 @@
-export const baseURL = '';
+export const baseURL = 'https://general-api.classbon.com/api';

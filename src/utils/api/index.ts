@@ -2,6 +2,7 @@ import axios from 'axios';
 import { baseURL } from '../constants';
 import { ApiError } from '../types/DTO/http-errors-interface';
 import { errorHandler, networkErrorStrategy } from './http-error-strategies';
+import { SignInDTO } from '@/app/(auth)/signin/_schemas/signin.schema';
 
 const httpService = axios.create({
     baseURL,
@@ -40,6 +41,10 @@ httpService.interceptors.request.use(
     }
 );
 
-const api = {};
+const auth = {
+    signin: (data: SignInDTO): Promise<void> =>
+        httpService.post('/identity/signin', data),
+};
+const api = { auth };
 
 export default api;
