@@ -3,7 +3,7 @@ import { baseURL } from '../constants';
 import { ApiError } from '../types/DTO/http-errors-interface';
 import { errorHandler, networkErrorStrategy } from './http-error-strategies';
 import { SignInDTO } from '@/app/(auth)/signin/_schemas/signin.schema';
-import { SignInResponse } from '../types/DTO/signin-response.interface';
+import { UserResponse } from '../types/DTO/auth.interface';
 
 const httpService = axios.create({
     baseURL,
@@ -43,7 +43,7 @@ httpService.interceptors.request.use(
 );
 
 const auth = {
-    signin: (data: SignInDTO): Promise<SignInResponse> =>
+    signin: (data: SignInDTO): Promise<UserResponse> =>
         httpService.post('/identity/signin', data),
 };
 const api = { auth };
