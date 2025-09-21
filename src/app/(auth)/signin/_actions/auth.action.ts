@@ -1,7 +1,7 @@
 'use server';
 import api from '@/utils/api';
 import { SignInSchema } from '../_schemas/signin.schema';
-import { headers } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import {
     JWT,
     UserResponse,
@@ -38,5 +38,11 @@ export async function setAuthCookieAction(user: UserResponse) {
         sessionExpiry: user.sessionExpiry,
         sessionId: user.sessionId,
     };
-    console.log(decoded, session);
+    const cookieStore = await cookies();
+    cookieStore.set('adv-session', JSON.stringify(session), {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+        path: '/',
+    });
 }
