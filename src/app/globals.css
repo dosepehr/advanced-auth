@@ -1,26 +1,85 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* breakpoint */
+  --breakpoint-xs: 30rem;
+  --breakpoint-sm: 36rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 62rem;
+  --breakpoint-xl: 75rem;
+  --breakpoint-2xl: 90rem;
+
+  /* radius */
+  --radius-10: 0.625rem;
+  --radius-20: 1.25rem;
+
+  --color-root: #FAFAFA;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+
+@plugin "daisyui" {
+  themes: light --default;
+  exclude: rootscrollgutter;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@plugin "daisyui/theme" {
+  color-scheme: "light";
+  default: true;
+  --color-primary: #222831;
+  --color-secondary: #B55400;
+  --color-neutral: #EEEEEE;
+  --color-base-content: #000000;
+  --root-bg: var(--color-root);
+  --color-primary-content: #ffffff;
+  --color-secondary-content: #ffffff;
+  --color-accent: #b8b8b8;
+  --color-accent-content: #f8f6f7;
+  --color-neutral-content: #222831;
+  --color-info: oklch(70% 0.2 220);
+  --color-info-content: oklch(98% 0.01 220);
+  --color-success: #00CE94;
+  --color-success-content: oklch(98% 0.01 140);
+  --color-warning: #ffbe00;
+  --color-warning-content: oklch(20% 0.05 80);
+  --color-error: #ff5861;
+  --color-error-content: oklch(98% 0.01 30);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+html {
+  font-weight: 500;
+  background-color: var(--root-bg);
+  scroll-behavior: smooth;
 }
+
+@utility container {
+  padding-inline: 1rem;
+  margin-inline: auto;
+}
+
+
+img {
+  user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+::-moz-selection {
+  /* Code for Firefox */
+  color: var(--color-secondary);
+  background: var(--color-neutral)
+}
+
+::selection {
+  color: var(--color-secondary);
+  background: var(--color-neutral)
+}
+
+svg {
+  flex-shrink: 0;
+}
+
+
