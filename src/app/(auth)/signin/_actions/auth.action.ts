@@ -17,7 +17,6 @@ export async function signinAction(dto: SignInSchema) {
         const user = await api.auth.signin({ ...dto, userAgent });
         await setAuthCookieAction(user);
         return {
-            res: user,
             isSuccess: true,
         };
     } catch (err) {
@@ -41,8 +40,8 @@ export async function setAuthCookieAction(user: UserResponse) {
     };
     const cookieStore = await cookies();
     const encryptedSession = await encryptSession(session);
-    const decryptedSession = await decryptSession(encryptedSession)
-    console.log(decryptedSession)
+    const decryptedSession = await decryptSession(encryptedSession);
+    console.log(decryptedSession);
     cookieStore.set('adv-session', encryptedSession, {
         httpOnly: true,
         secure: true,

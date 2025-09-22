@@ -1,17 +1,14 @@
 'use client';
-import React, { useEffect } from 'react';
+import { useSessionStore } from '@/utils/store/auth.store';
+import React from 'react';
 const Navigation = () => {
-    useEffect(() => {
-        const fetchSession = async () => {
-            const response = await fetch('/api/auth/session');
-            if (response.ok) {
-                const data = await response.json();
-                console.log(data);
-            }
-        };
-        fetchSession();
-    }, []);
-    return <div></div>;
+    const status = useSessionStore((state) => state.status);
+
+    return (
+        <div>
+            <p>{status}</p>
+        </div>
+    );
 };
 
 export default Navigation;

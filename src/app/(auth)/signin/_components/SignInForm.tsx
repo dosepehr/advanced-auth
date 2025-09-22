@@ -7,6 +7,7 @@ import { SignInSchema, signInSchema } from '../_schemas/signin.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import ErrorMessage from '@/components/ErrorMessage';
 import { signinAction } from '../_actions/auth.action';
+import { useSessionStore } from '@/utils/store/auth.store';
 const SignInForm = () => {
     const {
         register,
@@ -16,10 +17,13 @@ const SignInForm = () => {
         resolver: zodResolver(signInSchema),
     });
     const [isPending, startTransition] = useTransition();
+    const updateSession = useSessionStore((state) => state.updateSession);
     const onSubmit = async (data: SignInSchema) => {
         startTransition(async () => {
             const response = await signinAction(data);
-            console.log(response);
+            if (response.isSuccess) {
+                await updateSession();
+            }
         });
     };
     return (
