@@ -4,6 +4,8 @@ import { ApiError } from '../types/DTO/http-errors-interface';
 import { errorHandler, networkErrorStrategy } from './http-error-strategies';
 import { SignInDTO } from '@/app/(auth)/signin/_schemas/signin.schema';
 import { UserResponse, logoutDto } from '../types/DTO/auth.interface';
+import { getSession } from '@/app/(auth)/signin/_actions/auth.action';
+import { CourseListItem } from '../types/DTO/course.inerface';
 
 const httpService = axios.create({
     baseURL,
@@ -17,8 +19,10 @@ httpService.interceptors.response.use(
         return response.data;
     },
     (error) => {
+        console.log(error);
         if (error?.response) {
             const statusCode = error?.response?.status;
+            console.log('object');
             if (statusCode >= 400) {
                 const errorData: ApiError = error.response?.data;
                 console.log(error);
@@ -30,10 +34,10 @@ httpService.interceptors.response.use(
     }
 );
 httpService.interceptors.request.use(
-    (config) => {
-        const token = '';
+    async (config) => {
+        const token = await getSession();
         if (token) {
-            config.headers.authorization = `Bearer ${token}`;
+            config.headers.authorization = `Bearer ${token?.accessToken}`;
         }
         return config;
     },
@@ -48,6 +52,11 @@ const auth = {
     logout: (data: logoutDto): Promise<UserResponse> =>
         httpService.post('/identity/signout', data),
 };
-const api = { auth };
+
+const courses = {
+    all: (): Promise<CourseListItem[]> => httpService.get('/identity/courses'),
+};
+
+const api = { auth, courses };
 
 export default api;

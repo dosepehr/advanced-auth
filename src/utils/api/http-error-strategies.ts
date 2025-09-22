@@ -7,6 +7,7 @@ import {
     UnhandledException,
     ValidationError,
 } from '@/utils/types/DTO/http-errors-interface';
+import { unauthorized } from 'next/navigation';
 
 export type ApiErrorHandler = (errorData: ApiError) => void;
 
@@ -28,6 +29,7 @@ export const notFoundErrorStrategy: ApiErrorHandler = (errorData) => {
 };
 
 export const unauthorizedErrorStrategy: ApiErrorHandler = (errorData) => {
+    // unauthorized();
     throw {
         ...errorData,
         detail: 'Please sign up or log in to access this section',
@@ -52,7 +54,7 @@ export const networkErrorStrategy = () => {
 export const errorHandler: Record<number, ApiErrorHandler> = {
     400: (errorData) =>
         (errorData.errors ? validationErrorStrategy : badRequestErrorStrategy)(
-            errorData,
+            errorData
         ),
     409: conflictError,
     403: unauthorizedErrorStrategy,
