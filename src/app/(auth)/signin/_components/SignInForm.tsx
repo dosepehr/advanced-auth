@@ -10,7 +10,7 @@ import { signinAction } from '../_actions/auth.action';
 import { useSessionStore } from '@/utils/store/auth.store';
 import { useRouter } from 'next/navigation';
 const SignInForm = () => {
-    const router = useRouter()
+    const router = useRouter();
     const {
         register,
         handleSubmit,
@@ -25,7 +25,7 @@ const SignInForm = () => {
             const response = await signinAction(data);
             if (response.isSuccess) {
                 await updateSession();
-                router.push('/dashboard/courses')
+                router.push('/dashboard/courses');
             }
         });
     };
