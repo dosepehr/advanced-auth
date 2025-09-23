@@ -20,3 +20,6 @@ export interface UserSession extends JWT {
 export interface logoutDto {
     sessionId: string;
 }
+export interface refreshDto {
+    sessionId: string;
+}
