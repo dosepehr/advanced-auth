@@ -26,6 +26,8 @@ export const authMiddleware = async (request: NextRequest) => {
             return NextResponse.redirect(
                 `${signinRoute}?callbackUrl=${callbackUrl}`
             );
+        } else {
+            return nextResponse;
         }
     }
     try {
