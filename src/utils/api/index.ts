@@ -2,8 +2,13 @@ import axios from 'axios';
 import { baseURL } from '../constants';
 import { ApiError } from '../types/DTO/http-errors-interface';
 import { errorHandler, networkErrorStrategy } from './http-error-strategies';
-import { Mobile, SignupRes } from '@/app/(auth)/signup/_schemas/mobile.schema';
+import {
+    Mobile,
+    UserSession,
+} from '@/app/(auth)/signup/_schemas/mobile.schema';
 import { VerifyDTO } from '@/app/(auth)/verify/_schemas/verify.schema';
+import { getSession } from '@/app/(auth)/_actions/auth.action';
+import { UserRes } from '../types/DTO/user.interface';
 
 const httpService = axios.create({
     baseURL,
@@ -31,11 +36,10 @@ httpService.interceptors.response.use(
 );
 httpService.interceptors.request.use(
     async (config) => {
-        const token = {
-            accessToken: '',
-        };
-        if (token) {
-            config.headers.authorization = `Bearer ${token?.accessToken}`;
+        const session = await getSession();
+
+        if (session) {
+            config.headers.authorization = `Bearer ${session?.token}`;
         }
         return config;
     },
@@ -47,19 +51,19 @@ httpService.interceptors.request.use(
 const auth = {
     sendOtp: (data: Mobile): Promise<void> =>
         httpService.post('/send/otp', data),
-    verifyMobile: (data: VerifyDTO): Promise<SignupRes> =>
+    verifyMobile: (data: VerifyDTO): Promise<UserSession> =>
         httpService.post('/verify/mobile', data),
     // sendOtpEmail: (data: Email): Promise<void> =>
     //     httpService.post('/send/otp/email', data),
-    // verifyEmail: (data: OTPEmail): Promise<SignupRes> =>
+    // verifyEmail: (data: OTPEmail): Promise<UserSession> =>
     //     httpService.post('/verify/email', data),
     // verifyMobileForForgot: (data: OTP): Promise<ForgotRes> =>
     //     httpService.post('/verify/mobile', data),
-    // register: (data: Signup): Promise<SignupRes> =>
+    // register: (data: Signup): Promise<UserSession> =>
     //     httpService.post('/register', data),
-    // login: (data: Login): Promise<SignupRes> =>
+    // login: (data: Login): Promise<UserSession> =>
     //     httpService.post('/login', data),
-    // getMe: (): Promise<UserRes> => httpService.get('/dashboard'),
+    getMe: (): Promise<UserRes> => httpService.get('/dashboard'),
     // logout: (): Promise<void> => httpService.get('/logout'),
 };
 const api = {

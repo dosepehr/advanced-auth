@@ -11,6 +11,6 @@ export const mobileSchema = z.object({
 
 export type Mobile = z.infer<typeof mobileSchema>;
 
-export type SignupRes = {
+export type UserSession = {
     token: string;
 };

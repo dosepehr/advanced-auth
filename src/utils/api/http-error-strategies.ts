@@ -29,7 +29,7 @@ export const notFoundErrorStrategy: ApiErrorHandler = (errorData) => {
 };
 
 export const unauthorizedErrorStrategy: ApiErrorHandler = (errorData) => {
-    // unauthorized();
+    unauthorized();
     throw {
         ...errorData,
         detail: 'Please sign up or log in to access this section',
