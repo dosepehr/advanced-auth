@@ -87,6 +87,10 @@ html {
   --color-warning-content: oklch(20% 0.05 80);
   --color-error: #ff5861;
   --color-error-content: oklch(98% 0.01 30);
+
+  --radius-selector: 1rem;
+  --radius-field: 0.25rem;
+  --radius-box: 5rem;
 }
 
 @utility container {
