@@ -6,6 +6,9 @@ import { Mobile, mobileSchema } from '../_schemas/mobile.schema';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import ErrorMessage from '@/components/ErrorMessage';
+import { sendOtpAction } from '../_actions/signup.action';
+import { toast } from 'sonner';
+import { handleProblem } from '@/utils/api/error-client';
 
 const SignupForm = () => {
     const [isPending, startTransition] = useTransition();
@@ -14,13 +17,17 @@ const SignupForm = () => {
         register,
         handleSubmit,
         formState: { errors },
-        getValues,
     } = useForm<Mobile>({
         resolver: zodResolver(mobileSchema),
     });
     const onSubmit = (data: Mobile) => {
         startTransition(async () => {
-            console.log(data);
+            const res = await sendOtpAction(data);
+            if (res.isSuccess) {
+                toast.success('done');
+            } else {
+                handleProblem(res);
+            }
         });
     };
     return (
@@ -30,7 +37,7 @@ const SignupForm = () => {
         >
             <Input {...register('mobile_number')} />
             <ErrorMessage errors={errors} field='mobile_number' />
-            <Button shape='block' type='submit'>
+            <Button shape='block' type='submit' isLoading={isPending}>
                 confirm
             </Button>
         </form>

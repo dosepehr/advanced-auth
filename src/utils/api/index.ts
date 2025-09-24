@@ -2,6 +2,7 @@ import axios from 'axios';
 import { baseURL } from '../constants';
 import { ApiError } from '../types/DTO/http-errors-interface';
 import { errorHandler, networkErrorStrategy } from './http-error-strategies';
+import { Mobile } from '@/app/(auth)/signup/_schemas/mobile.schema';
 
 const httpService = axios.create({
     baseURL,
@@ -42,7 +43,26 @@ httpService.interceptors.request.use(
     }
 );
 
-
-const api = { };
+const auth = {
+    sendOtp: (data: Mobile): Promise<void> =>
+        httpService.post('/send/otp', data),
+    // sendOtpEmail: (data: Email): Promise<void> =>
+    //     httpService.post('/send/otp/email', data),
+    // verifyMobile: (data: OTP): Promise<SignupRes> =>
+    //     httpService.post('/verify/mobile', data),
+    // verifyEmail: (data: OTPEmail): Promise<SignupRes> =>
+    //     httpService.post('/verify/email', data),
+    // verifyMobileForForgot: (data: OTP): Promise<ForgotRes> =>
+    //     httpService.post('/verify/mobile', data),
+    // register: (data: Signup): Promise<SignupRes> =>
+    //     httpService.post('/register', data),
+    // login: (data: Login): Promise<SignupRes> =>
+    //     httpService.post('/login', data),
+    // getMe: (): Promise<UserRes> => httpService.get('/dashboard'),
+    // logout: (): Promise<void> => httpService.get('/logout'),
+};
+const api = {
+    auth,
+};
 
 export default api;
