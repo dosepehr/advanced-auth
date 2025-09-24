@@ -3,6 +3,8 @@
 import api from '@/utils/api';
 import { VerifyDTO } from '../_schemas/verify.schema';
 import { Problem } from '@/utils/types/DTO/http-errors-interface';
+import { cookies } from 'next/headers';
+import { encryptSession } from '@/utils/types/funcs/session';
 
 type VerifyMobileResult =
     | { isSuccess: true }
@@ -13,7 +15,10 @@ export async function verifyMobileAction(
 ): Promise<VerifyMobileResult> {
     try {
         const res = await api.auth.verifyMobile(dto);
-        console.log(res);
+        const cookiesStore = await cookies();
+        const encryptedSession = await encryptSession(res);
+
+        cookiesStore.set('session-cookie', encryptedSession);
         return {
             isSuccess: true,
         };

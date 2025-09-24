@@ -10,6 +10,7 @@ import Cookies from 'universal-cookie';
 import { useRouter } from 'next/navigation';
 import { verifyMobileAction } from '../_actions/verify.action';
 import { handleProblem } from '@/utils/api/error-client';
+import { toast } from 'sonner';
 
 const VerifyForm = () => {
     const [isPending, startTransition] = useTransition();
@@ -30,10 +31,12 @@ const VerifyForm = () => {
         },
     });
     const onSubmit = (data: VerifyDTO) => {
-        console.log(data);
         startTransition(async () => {
             const res = await verifyMobileAction(data);
             if (res.isSuccess) {
+                cookies.remove('mobile');
+                router.push('/dashboard');
+                toast.success('welcome');
             } else {
                 handleProblem(res);
             }
